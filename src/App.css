@@ -1,0 +1,15 @@
+.App {
+  text-align: center;
+}
+
+.Board {
+  margin: auto;
+  line-height: 0;
+}
+
+.Cell {
+  display: inline-block;
+  border: 1px solid black;
+  background-color: white;
+  margin: 0;
+}
