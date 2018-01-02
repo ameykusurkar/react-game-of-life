@@ -1,32 +1,46 @@
 import React from 'react';
 import './App.css';
 
+const COLUMNS = 30;
+const ROWS = 20;
+const CELL_WIDTH = 15;
+const CELL_BORDER = 1;
+
 class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      generation: 0,
+      grid: Array(ROWS).fill(Array(COLUMNS).fill(false))
+    };
+  }
+
   render() {
     return (
       <div className="App">
         <h1>{"Conway's Game of Life"}</h1>
-        <Board />
-        <p>Generations: 0</p>
+        <Board grid={this.state.grid}/>
+        <p>Generations: {this.state.generation}</p>
       </div>
     );
   }
 }
 
 class Board extends React.Component {
-  COLUMNS = 30;
-  ROWS = 20;
-  CELL_WIDTH = 15;
-  CELL_BORDER = 1;
-
   render() {
     var cells = [];
-    var width = this.COLUMNS * (this.CELL_WIDTH + 2*this.CELL_BORDER);
-    for (var i = 0; i < this.ROWS; i++) {
-      for (var j = 0; j < this.COLUMNS; j++) {
-        cells.push(<Cell height={this.CELL_WIDTH} width={this.CELL_WIDTH}/>);
+    const rows = this.props.grid.length;
+    const columns = this.props.grid[0].length;
+    var width = columns * (CELL_WIDTH + 2 * CELL_BORDER);
+    for (var i = 0; i < rows; i++) {
+      for (var j = 0; j < columns; j++) {
+        var cellClass = this.props.grid[i][j] ? "Cell on" : "Cell off";
+        cells.push(<Cell height={CELL_WIDTH}
+                         width={CELL_WIDTH}
+                         cellClass={cellClass} />);
       }
     }
+
     return (
       <div className="Board" style={{width: width}}>
         {cells}
@@ -38,7 +52,7 @@ class Board extends React.Component {
 class Cell extends React.Component {
   render() {
     return (
-      <div className="Cell"
+      <div className={this.props.cellClass}
            style={{width: this.props.width, height: this.props.height}}
       />
     );
