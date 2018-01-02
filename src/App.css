@@ -7,6 +7,13 @@
   line-height: 0;
 }
 
+.buttons {
+  margin: auto;
+  display: table;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 .Cell {
   display: inline-block;
   border: 1px solid black;

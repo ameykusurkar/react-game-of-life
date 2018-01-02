@@ -1,10 +1,11 @@
 import React from 'react';
+import { Button, ButtonToolbar } from 'react-bootstrap';
 import './App.css';
 
 const COLUMNS = 30;
 const ROWS = 20;
+// NOTE: With react-bootstrap, width includes the borders
 const CELL_WIDTH = 15;
-const CELL_BORDER = 1;
 
 class App extends React.Component {
   constructor() {
@@ -29,6 +30,13 @@ class App extends React.Component {
     return (
       <div className="App">
         <h1>{"Conway's Game of Life"}</h1>
+        <div className="buttons">
+          <ButtonToolbar>
+            <Button disabled={this.state.gameIsRunning}>Play</Button>
+            <Button disabled={!this.state.gameIsRunning}>Pause</Button>
+            <Button disabled={!this.state.gameIsRunning}>Reset</Button>
+          </ButtonToolbar>
+        </div>
         <Board grid={this.state.grid}
                handleClick={(i, j) => this.handleClick(i, j)}/>
         <p>Generations: {this.state.generation}</p>
@@ -47,7 +55,7 @@ class Board extends React.Component {
     var cells = [];
     const rows = this.props.grid.length;
     const columns = this.props.grid[0].length;
-    var width = columns * (CELL_WIDTH + 2 * CELL_BORDER);
+    var width = columns * CELL_WIDTH;
     for (var i = 0; i < rows; i++) {
       for (var j = 0; j < columns; j++) {
         var cellClass = this.props.grid[i][j] ? "Cell on" : "Cell off";
