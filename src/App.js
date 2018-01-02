@@ -24,7 +24,7 @@ class Board extends React.Component {
     var width = this.COLUMNS * (this.CELL_WIDTH + 2*this.CELL_BORDER);
     for (var i = 0; i < this.ROWS; i++) {
       for (var j = 0; j < this.COLUMNS; j++) {
-        cells.push(<Cell height={this.CELL_WIDTH} width={this.CELL_WIDTH}/>)
+        cells.push(<Cell height={this.CELL_WIDTH} width={this.CELL_WIDTH}/>);
       }
     }
     return (
