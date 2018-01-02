@@ -5,7 +5,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <h1>Conway's Game of Life</h1>
+        <h1>{"Conway's Game of Life"}</h1>
         <Board />
         <p>Generations: 0</p>
       </div>
