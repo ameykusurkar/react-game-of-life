@@ -17,8 +17,31 @@ class App extends React.Component {
     };
   }
 
+  gameIteration = () => {
+    this.setState({ generation: this.state.generation + 1 });
+  }
+
+  handlePlayPause = () => {
+    if (this.state.gameIsRunning) {
+      clearInterval(this.intervalId);
+    } else {
+      this.intervalId = setInterval(this.gameIteration, 200);
+    }
+
+    this.setState({ gameIsRunning: !this.state.gameIsRunning });
+  }
+
+  handleReset = () => {
+    clearInterval(this.intervalId);
+    this.setState({
+      generation: 0,
+      grid: Array(ROWS).fill(Array(COLUMNS).fill(false)),
+      gameIsRunning: false
+    });
+  }
+
   handleClick(i, j) {
-    if (this.state.gameIsRunning) { return; }
+    if (this.state.generation !== 0) { return; }
 
     var newGrid = cloneGrid(this.state.grid);
     console.log(i, j);
@@ -32,14 +55,15 @@ class App extends React.Component {
         <h1>{"Conway's Game of Life"}</h1>
         <div className="buttons">
           <ButtonToolbar>
-            <Button disabled={this.state.gameIsRunning}>Play</Button>
-            <Button disabled={!this.state.gameIsRunning}>Pause</Button>
-            <Button disabled={!this.state.gameIsRunning}>Reset</Button>
+            <Button onClick={this.handlePlayPause}>
+              {this.state.gameIsRunning ? "Pause" : "Play"}
+            </Button>
+            <Button onClick={this.handleReset}>Reset</Button>
           </ButtonToolbar>
         </div>
         <Board grid={this.state.grid}
                handleClick={(i, j) => this.handleClick(i, j)}/>
-        <p>Generations: {this.state.generation}</p>
+        <h3>Generations: {this.state.generation}</h3>
       </div>
     );
   }
