@@ -40,7 +40,7 @@ class App extends React.Component {
     });
   }
 
-  handleClick(i, j) {
+  handleCellClick(i, j) {
     if (this.state.generation !== 0) { return; }
 
     var newGrid = cloneGrid(this.state.grid);
@@ -62,7 +62,7 @@ class App extends React.Component {
           </ButtonToolbar>
         </div>
         <Board grid={this.state.grid}
-               handleClick={(i, j) => this.handleClick(i, j)}/>
+               handleCellClick={(i, j) => this.handleCellClick(i, j)}/>
         <h3>Generations: {this.state.generation}</h3>
       </div>
     );
@@ -72,7 +72,7 @@ class App extends React.Component {
 class Board extends React.Component {
   // We need this function to force i, j to be passed by value
   createClickHandler(i, j) {
-    return () => this.props.handleClick(i, j);
+    return () => this.props.handleCellClick(i, j);
   }
 
   render() {
