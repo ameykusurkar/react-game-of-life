@@ -44,7 +44,6 @@ class App extends React.Component {
     if (this.state.generation !== 0) { return; }
 
     var newGrid = cloneGrid(this.state.grid);
-    console.log(i, j);
     newGrid[i][j] = !newGrid[i][j];
     this.setState({ grid: newGrid });
   }
