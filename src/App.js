@@ -1,17 +1,18 @@
 import React from 'react';
-import { Button, ButtonToolbar } from 'react-bootstrap';
+import { Button, DropdownButton, ButtonToolbar, MenuItem } from 'react-bootstrap';
 import './App.css';
 
 const COLUMNS = 50;
 const ROWS = 30;
 // NOTE: With react-bootstrap, width includes the borders
 const CELL_WIDTH = 15;
-const INTERVAL = 300; // milli-seconds
+const INTERVALS = { Slow: 500, Medium: 300, Fast: 150 }; // milliseconds
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
+      speed: "Medium",
       generation: 0,
       grid: Array(ROWS).fill().map(_ => Array(COLUMNS).fill(false)),
       gameIsRunning: false
@@ -45,7 +46,8 @@ class App extends React.Component {
     if (this.state.gameIsRunning) {
       clearInterval(this.intervalId);
     } else {
-      this.intervalId = setInterval(this.gameIteration, INTERVAL);
+      var interval = INTERVALS[this.state.speed] || 300;
+      this.intervalId = setInterval(this.gameIteration, interval);
     }
 
     this.setState({ gameIsRunning: !this.state.gameIsRunning });
@@ -72,6 +74,16 @@ class App extends React.Component {
     this.setState({ grid: newGrid });
   }
 
+  changeSpeed = (eventKey) => {
+    if (this.state.gameIsRunning) {
+      clearInterval(this.intervalId);
+      var interval = INTERVALS[eventKey] || 300;
+      this.intervalId = setInterval(this.gameIteration, interval);
+    }
+
+    this.setState({ speed: eventKey });
+  }
+
   handleCellClick(i, j) {
     if (this.state.gameIsRunning) { return; }
 
@@ -94,6 +106,14 @@ class App extends React.Component {
               {this.state.gameIsRunning ? "Pause" : "Play"}
             </Button>
             <Button onClick={this.handleReset}>Reset</Button>
+            <DropdownButton title={this.state.speed}>
+              <MenuItem eventKey="Slow"
+                        onSelect={this.changeSpeed}>Slow</MenuItem>
+              <MenuItem eventKey="Medium"
+                        onSelect={this.changeSpeed}>Medium</MenuItem>
+              <MenuItem eventKey="Fast"
+                        onSelect={this.changeSpeed}>Fast</MenuItem>
+            </DropdownButton>
           </ButtonToolbar>
         </div>
         <Board grid={this.state.grid}
