@@ -106,7 +106,7 @@ class App extends React.Component {
               {this.state.gameIsRunning ? "Pause" : "Play"}
             </Button>
             <Button onClick={this.handleReset}>Reset</Button>
-            <DropdownButton title={this.state.speed}>
+            <DropdownButton title={this.state.speed} id="speedDropdown">
               <MenuItem eventKey="Slow"
                         onSelect={this.changeSpeed}>Slow</MenuItem>
               <MenuItem eventKey="Medium"
