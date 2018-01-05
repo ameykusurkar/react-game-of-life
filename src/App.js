@@ -6,26 +6,46 @@ const COLUMNS = 30;
 const ROWS = 20;
 // NOTE: With react-bootstrap, width includes the borders
 const CELL_WIDTH = 15;
+const INTERVAL = 300; // milli-seconds
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
       generation: 0,
-      grid: Array(ROWS).fill(Array(COLUMNS).fill(false)),
+      grid: Array(ROWS).fill().map(_ => Array(COLUMNS).fill(false)),
       gameIsRunning: false
     };
   }
 
   gameIteration = () => {
-    this.setState({ generation: this.state.generation + 1 });
+    var newGrid = Array(ROWS).fill().map(_ => []);
+
+    for (var i = 0; i < ROWS; i++) {
+      for (var j = 0; j < COLUMNS; j++) {
+        var neighbours = getNeighbours(this.state.grid, i, j);
+
+        if (this.state.grid[i][j]) {
+          // A live cell lives on if it has 2 or 3 neighbours
+          newGrid[i][j] = (neighbours === 2 || neighbours === 3);
+        } else {
+          // A dead cell becomes live if it has 3 neighbours
+          newGrid[i][j] = (neighbours === 3);
+        }
+      }
+    }
+
+    this.setState({
+      generation: this.state.generation + 1,
+      grid: newGrid
+    });
   }
 
   handlePlayPause = () => {
     if (this.state.gameIsRunning) {
       clearInterval(this.intervalId);
     } else {
-      this.intervalId = setInterval(this.gameIteration, 200);
+      this.intervalId = setInterval(this.gameIteration, INTERVAL);
     }
 
     this.setState({ gameIsRunning: !this.state.gameIsRunning });
@@ -35,7 +55,7 @@ class App extends React.Component {
     clearInterval(this.intervalId);
     this.setState({
       generation: 0,
-      grid: Array(ROWS).fill(Array(COLUMNS).fill(false)),
+      grid: Array(ROWS).fill().map(_ => Array(COLUMNS).fill(false)),
       gameIsRunning: false
     });
   }
@@ -108,6 +128,23 @@ class Cell extends React.Component {
       />
     );
   }
+}
+
+function getNeighbours(grid, x, y) {
+  var counter = 0;
+  for (var i = x - 1; i <= x + 1; i++) {
+    for (var j = y - 1; j <= y + 1; j++) {
+      if ((i !== x || j !== y) && cellIsLive(grid, i, j)) {
+        counter++;
+      }
+    }
+  }
+  return counter;
+}
+
+function cellIsLive(grid, x, y) {
+  if (x < 0 || x >= grid.length) return false;
+  return grid[x][y];
 }
 
 function cloneGrid(grid) {
