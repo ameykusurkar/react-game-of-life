@@ -2,8 +2,8 @@ import React from 'react';
 import { Button, ButtonToolbar } from 'react-bootstrap';
 import './App.css';
 
-const COLUMNS = 30;
-const ROWS = 20;
+const COLUMNS = 50;
+const ROWS = 30;
 // NOTE: With react-bootstrap, width includes the borders
 const CELL_WIDTH = 15;
 const INTERVAL = 300; // milli-seconds
@@ -60,8 +60,20 @@ class App extends React.Component {
     });
   }
 
+  randomFillGrid = () => {
+    var newGrid = Array(ROWS).fill().map(_ => []);
+
+    for (var i = 0; i < ROWS; i++) {
+      for (var j = 0; j < COLUMNS; j++) {
+        newGrid[i][j] = Math.random() < 0.25;
+      }
+    }
+
+    this.setState({ grid: newGrid });
+  }
+
   handleCellClick(i, j) {
-    if (this.state.generation !== 0) { return; }
+    if (this.state.gameIsRunning) { return; }
 
     var newGrid = cloneGrid(this.state.grid);
     newGrid[i][j] = !newGrid[i][j];
@@ -74,6 +86,10 @@ class App extends React.Component {
         <h1>{"Conway's Game of Life"}</h1>
         <div className="buttons">
           <ButtonToolbar>
+            <Button onClick={this.randomFillGrid}
+                    disabled={this.state.gameIsRunning}>
+              Random Fill
+            </Button>
             <Button onClick={this.handlePlayPause}>
               {this.state.gameIsRunning ? "Pause" : "Play"}
             </Button>
