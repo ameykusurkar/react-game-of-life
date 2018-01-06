@@ -155,15 +155,12 @@ class Board extends React.Component {
   }
 }
 
-class Cell extends React.Component {
-  render() {
-    return (
-      <div className={this.props.cellClass}
-           style={{width: this.props.width, height: this.props.height}}
-           onClick={this.props.onClick}
-      />
-    );
-  }
+function Cell(props) {
+  return (
+    <div className={props.cellClass}
+         style={{width: props.width, height: props.height}}
+         onClick={props.onClick} />
+  );
 }
 
 function getNeighbours(grid, x, y) {
