@@ -12,7 +12,7 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      speed: "Medium",
+      speed: "Fast",
       generation: 0,
       grid: Array(ROWS).fill().map(_ => Array(COLUMNS).fill(false)),
       gameIsRunning: false
@@ -108,11 +108,14 @@ class App extends React.Component {
             <Button onClick={this.handleReset}>Reset</Button>
             <DropdownButton title={this.state.speed} id="speedDropdown">
               <MenuItem eventKey="Slow"
-                        onSelect={this.changeSpeed}>Slow</MenuItem>
+                        onSelect={this.changeSpeed}
+                        active={this.state.speed === "Slow"}>Slow</MenuItem>
               <MenuItem eventKey="Medium"
-                        onSelect={this.changeSpeed}>Medium</MenuItem>
+                        onSelect={this.changeSpeed}
+                        active={this.state.speed === "Medium"}>Medium</MenuItem>
               <MenuItem eventKey="Fast"
-                        onSelect={this.changeSpeed}>Fast</MenuItem>
+                        onSelect={this.changeSpeed}
+                        active={this.state.speed === "Fast"}>Fast</MenuItem>
             </DropdownButton>
           </ButtonToolbar>
         </div>
